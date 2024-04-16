@@ -4,14 +4,7 @@
 #include "common.h"
 #include "display_itf.h"
 #include "object_itf.h"
-
-interface IConsolePixel : extends IPixel {
-    virtual char getSymbol() const = 0 ;
-} ;
-SET_IID( IConsolePixel, "cd1bc7e5-3a2c-4584-8849-08691a8a5fda" ) ;
-
-IConsolePixel* createConsolePixel( const char& symbol ) ;
-
+#include "console_pixel_itf.h"
 
 class Console : implements IDisplay {
     SETUP_REFCOUNT() ;
@@ -49,6 +42,10 @@ public:
     }
 
     virtual void draw( uint x, uint y, IPixel* pixel ) {
+        if ( x >= width || y >= height ) {
+            return ;
+        }
+        pixel->acquire() ;
         IConsolePixel* consolePixel = ::request< IConsolePixel >( pixel ) ;
         if ( consolePixel == nullptr ) {
             return ;
@@ -56,6 +53,7 @@ public:
         consolePixel->acquire() ;
         at( x, y ) = consolePixel->getSymbol() ;
         consolePixel->release() ;
+        pixel->release() ;
     }
 
     virtual void refresh() {
@@ -67,10 +65,6 @@ public:
         }
     }
 } ;
-
-inline IDisplay* createDisplay(uint width, uint height) {
-    return new Console( width, height ) ;
-}
 
 class ConsolePixel : implements IConsolePixel {
     SETUP_REFCOUNT() ;
@@ -106,6 +100,3 @@ public:
     }
 } ;
 
-inline IConsolePixel* createConsolePixel( const char& symbol ) {
-    return new ConsolePixel( symbol ) ;
-}
