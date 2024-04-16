@@ -8,17 +8,21 @@
     }
 
 #define SETUP_REFCOUNT() \
-    private: int mc_refCount = 0 ; \
+    private: int mc_refCount = 1 ; \
     public: \
         virtual void acquire() { ++mc_refCount ; } \
         virtual void release() { if ( --mc_refCount <= 0 ) delete this ; } \
 
-#define IMPLEMENTED_INTERFACES(x) \
-    public: virtual IObject* request( const Guid& iid ) { x; return nullptr }
-#define IMPLEMENT_INTERFACE(itf) \
+#define IMPLEMENTED_INTERFACE(itf) \
     if ( iid == Iid< itf >::getIid() ) return this ;
-#define DELEGATE_INTERFACE(itf,obj) \
+
+#define DELEGATED_INTERFACE(itf,obj) \
     if ( iid == Iid< itf >::getIid() ) return obj ;
+
+#define INTERFACES(x) \
+    public: virtual IObject* request( const Guid& iid ) { \
+        IMPLEMENTED_INTERFACE(IObject) ; x; return nullptr ;\
+    }
 
 template< typename Itf >
 struct Iid {
