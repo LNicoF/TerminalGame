@@ -41,3 +41,10 @@ inline Itf* request( IObject* obj ) {
     return ( Itf* )obj->request( Iid< Itf >::getIid() ) ;
 }
 
+inline void releaseSafely( IObject*& obj ) {
+    if ( obj == nullptr ) {
+        return ;
+    }
+    obj->release() ;
+    obj = nullptr ;
+}

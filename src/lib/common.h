@@ -13,4 +13,4 @@
     cls& operator =( const cls& )
 
 typedef unsigned int uint ;
-
+typedef unsigned char byte ;
