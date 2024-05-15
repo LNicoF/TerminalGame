@@ -26,7 +26,7 @@
 
 template< typename Itf >
 struct Iid {
-    static const char* getIid() { return 0 ; }
+    static Guid getIid() { return "00000000-0000-0000-0000-000000000000" ; }
 } ;
 
 interface IObject {
@@ -34,14 +34,15 @@ interface IObject {
     virtual void release() = 0 ;
     virtual IObject* request( const Guid& iid ) = 0 ;
 } ;
-SET_IID( IObject, "00000000-0000-0000-0000-000000000000" ) ;
+SET_IID( IObject, "6c07c8e2-250d-4d09-9fbe-43cbab94dfb5" ) ;
 
 template< typename Itf >
 inline Itf* request( IObject* obj ) {
     return ( Itf* )obj->request( Iid< Itf >::getIid() ) ;
 }
 
-inline void releaseSafely( IObject*& obj ) {
+template< typename Itf >
+inline void releaseSafely( Itf& obj ) {
     if ( obj == nullptr ) {
         return ;
     }

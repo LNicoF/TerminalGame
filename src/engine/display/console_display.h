@@ -42,14 +42,16 @@ public:
     }
 
     virtual void draw( uint x, uint y, IPixel* pixel ) {
-        if ( x >= width || y >= height ) {
+        if ( x >= width || y >= height ) { // Precondition
             return ;
         }
         pixel->acquire() ;
         IConsolePixel* consolePixel = ::request< IConsolePixel >( pixel ) ;
         if ( consolePixel == nullptr ) {
+            pixel->release() ;
             return ;
         }
+
         consolePixel->acquire() ;
         at( x, y ) = consolePixel->getSymbol() ;
         consolePixel->release() ;

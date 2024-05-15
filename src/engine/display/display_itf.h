@@ -11,6 +11,11 @@ SET_IID( IPixel, "86e46913-4ad5-4b37-aa68-a7ad614f5529" ) ;
  *
  * d.draw() ;
  * Pre: 0 <= x < d.width ∧ 0 <= y < d.height
+ *
+ *
+ *  With draw() you stage a pixel for drawing
+ * and that pixel will be printed (unless overwritten)
+ * when refresh() gets called.
  */
 interface IDisplay : extends IObject {
     virtual void draw( uint x, uint y, IPixel* pixel ) = 0 ;
