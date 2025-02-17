@@ -1,10 +1,15 @@
 #pragma once
 #include "object_itf.h"
+#include "object_environment_itf.h"
 
+//
+// Action Arg Interface
+//
 interface IActionArg : extends IObject {
 } ;
 SET_IID( IActionArg, "faba1848-9ed7-4a4c-8ce8-c4df6b0d2528" ) ;
 
+IActionArg* createEmptyActionArg() ;
 
 interface IAction : extends IObject {
     virtual void execute( IActionArg* arg ) = 0 ;

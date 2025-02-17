@@ -3,19 +3,20 @@
 #include <string.h>
 
 struct Guid {
-    char str[ 37 ] ;
+    static const int STR_SIZE = 37 ;
+    char str[ STR_SIZE ] ;
 
     /// Example: "03f65a15-0e37-4271-88b8-c4ef95653f4e"
     Guid( const char* guidStr ) : indexCache( 0 ) {
-        strcpy( str, guidStr ) ;
+        strcpy_s( str, STR_SIZE, guidStr ) ;
     }
 
     Guid( const Guid& rhs ) : indexCache( rhs.indexCache ) {
-        strcpy( str, rhs.str ) ;
+        strcpy_s( str, STR_SIZE, rhs.str ) ;
     }
 
     Guid& operator=( const Guid& rhs ) {
-        strcpy( str, rhs.str ) ;
+        strcpy_s( str, STR_SIZE, rhs.str ) ;
         indexCache = rhs.indexCache ;
         return *this ;
     }

@@ -3,17 +3,22 @@
 #include "factory.h"
 #include "guid.h"
 #include "object_itf.h"
-#include "object_set_itf.h"
+#include "object_environment_itf.h"
 
 #include <list>
 #include <unordered_map>
 #include <utility>
 
-class ObjectSet : implements IObjectSet {
-    DISABLE_COPY( ObjectSet ) ;
+///
+///   There should be support for objects taken from dynamic libraries,
+/// and a dynamic choice of what librarie will provide the object.
+///
+class ObjectEnvironment : implements IObjectEnvironment {
+    DISABLE_COPY( ObjectEnvironment ) ;
     SETUP_REFCOUNT() ;
     INTERFACES(
-        IMPLEMENTED_INTERFACE( IObjectSet )
+        IMPLEMENTED_INTERFACE( IObjectEnvironment ) ;
+		return findInstance( iid ) ;
     ) ;
 
 private:
@@ -26,10 +31,10 @@ private:
     HashMap hashmap ;
 
 public:
-    ObjectSet() {
+    ObjectEnvironment( IObject* owner = nullptr ) : SET_OWNER( owner ) {
     }
 
-    virtual ~ObjectSet() {
+    virtual ~ObjectEnvironment() {
         releaseObjects() ;
     }
 

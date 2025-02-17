@@ -1,28 +1,7 @@
 #pragma once
 #include "common.h"
 #include "guid.h"
-
-#define SET_IID( itf, iid ) \
-    template<> struct Iid< interface itf > { \
-        static Guid getIid() { return iid ; } \
-    }
-
-#define SETUP_REFCOUNT() \
-    private: int mc_refCount = 1 ; \
-    public: \
-        virtual void acquire() { ++mc_refCount ; } \
-        virtual void release() { if ( --mc_refCount <= 0 ) delete this ; } \
-
-#define IMPLEMENTED_INTERFACE(itf) \
-    if ( iid == Iid< itf >::getIid() ) return this ;
-
-#define DELEGATED_INTERFACE(itf,obj) \
-    if ( iid == Iid< itf >::getIid() ) return obj ;
-
-#define INTERFACES(x) \
-    public: virtual IObject* request( const Guid& iid ) { \
-        IMPLEMENTED_INTERFACE(IObject) ; x; return nullptr ;\
-    }
+#include "object_macros.h"
 
 template< typename Itf >
 struct Iid {
